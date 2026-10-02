@@ -1,0 +1,125 @@
+- generic [ref=f1e3]:
+  - complementary "Chart selection" [ref=f1e4]:
+    - link "Jitter Charts home" [ref=f1e5] [cursor=pointer]:
+      - /url: /
+      - generic [aria-hidden] [ref=f1e6]: J
+      - generic [ref=f1e7]: Jitter Charts
+    - group "Choose charts to display" [ref=f1e8]:
+      - generic [ref=f1e10] [cursor=pointer]:
+        - radio "00 All charts" [checked] [ref=f1e11]
+        - generic [ref=f1e12]: "00"
+        - generic [ref=f1e13]: All charts
+      - generic [ref=f1e15] [cursor=pointer]:
+        - radio "01 Story arc" [ref=f1e16]
+        - generic [ref=f1e17]: "01"
+        - generic [ref=f1e18]: Story arc
+      - generic [ref=f1e20] [cursor=pointer]:
+        - radio "02 Quarterly growth" [ref=f1e21]
+        - generic [ref=f1e22]: "02"
+        - generic [ref=f1e23]: Quarterly growth
+      - generic [ref=f1e25] [cursor=pointer]:
+        - radio "03 Weekly comparison" [ref=f1e26]
+        - generic [ref=f1e27]: "03"
+        - generic [ref=f1e28]: Weekly comparison
+  - main [ref=f1e30]:
+    - generic [ref=f1e31]:
+      - generic [ref=f1e32]:
+        - paragraph [ref=f1e33]: Data in motion
+        - heading "Chart previews" [level=1] [ref=f1e34]
+        - paragraph [ref=f1e35]: Three animated studies, from story beats to weekly performance.
+      - generic [ref=f1e36]:
+        - generic [ref=f1e37]: "03"
+        - generic [ref=f1e38]: previews
+    - region "Chart previews" [ref=f1e39]:
+      - article [ref=f1e40]:
+        - generic [ref=f1e41]:
+          - generic [ref=f1e42]:
+            - generic [ref=f1e43]: "01"
+            - heading "Story arc" [level=2] [ref=f1e44]
+          - paragraph [ref=f1e45]: Emotional beats across a feature-length story.
+        - generic [ref=f1e48]:
+          - heading "Story Arc Chart" [level=3] [ref=f1e49]
+          - img [ref=f1e50]:
+            - generic [ref=f1e166]:
+              - generic [ref=f1e167]:
+                - generic [ref=f1e168]: "2"
+                - generic [ref=f1e170]: "4"
+                - generic [ref=f1e172]: "6"
+                - generic [ref=f1e174]: "8"
+                - generic [ref=f1e176]: "10"
+                - generic [ref=f1e178]: "12"
+                - generic [ref=f1e180]: "14"
+                - generic [ref=f1e182]: "16"
+                - generic [ref=f1e184]: "18"
+                - generic [ref=f1e186]: "20"
+                - generic [ref=f1e188]: "22"
+                - generic [ref=f1e190]: "24"
+              - generic [ref=f1e192]:
+                - generic [ref=f1e193]: −10
+                - generic [ref=f1e195]: −8
+                - generic [ref=f1e197]: −6
+                - generic [ref=f1e199]: −4
+                - generic [ref=f1e201]: −2
+                - generic [ref=f1e203]: "0"
+                - generic [ref=f1e205]: "2"
+                - generic [ref=f1e207]: "4"
+                - generic [ref=f1e209]: "6"
+                - generic [ref=f1e211]: "8"
+                - generic [ref=f1e213]: "10"
+          - generic [ref=f1e103]:
+            - generic [ref=f1e104]: Interstellar
+            - generic [ref=f1e107]: Baseline
+      - article [ref=f1e110]:
+        - generic [ref=f1e111]:
+          - generic [ref=f1e112]:
+            - generic [ref=f1e113]: "02"
+            - heading "Quarterly growth" [level=2] [ref=f1e114]
+          - paragraph [ref=f1e115]: A year of revenue, with the final quarter in focus.
+        - generic [ref=f1e117]:
+          - generic [ref=f1e118]:
+            - generic [ref=f1e119]:
+              - text: Q4 dataset
+              - generic [ref=f1e120]: 36,157
+            - generic [ref=f1e121]:
+              - generic [aria-hidden] [ref=f1e122]: ↗
+              - text: 8%
+              - generic [ref=f1e123]: year over year
+          - img [ref=f1e125]:
+            - generic [ref=f1e218]:
+              - generic [ref=f1e220]:
+                - generic [ref=f1e221]: "0"
+                - generic [ref=f1e222]: 20K
+                - generic [ref=f1e223]: 40K
+                - generic [ref=f1e224]: 60K
+              - generic [ref=f1e225]:
+                - generic [ref=f1e226]: Q1
+                - generic [ref=f1e227]: Q2
+                - generic [ref=f1e228]: Q3
+                - generic [ref=f1e229]: Q4
+      - article [ref=f1e126]:
+        - generic [ref=f1e127]:
+          - generic [ref=f1e128]:
+            - generic [ref=f1e129]: "03"
+            - heading "Weekly comparison" [level=2] [ref=f1e130]
+          - paragraph [ref=f1e131]: Two daily series compared across the week.
+        - generic [ref=f1e133]:
+          - generic [ref=f1e134]: Last 7 days
+          - generic [ref=f1e135]:
+            - generic [ref=f1e136]:
+              - generic [ref=f1e137]: "0.00"
+              - generic [ref=f1e138]: Dataset 1, daily avg.
+            - generic [ref=f1e140]:
+              - generic [ref=f1e141]: "1.85"
+              - generic [ref=f1e142]: Dataset 2, daily avg.
+          - img [ref=f1e145]:
+            - generic [ref=f1e146]:
+              - generic [ref=f1e147]: Mon
+              - generic [ref=f1e149]: Tue
+              - generic [ref=f1e151]: Wed
+              - generic [ref=f1e153]: Thu
+              - generic [ref=f1e155]: Fri
+              - generic [ref=f1e157]: Sat
+              - generic [ref=f1e159]: Sun
+          - generic [ref=f1e161]:
+            - generic [ref=f1e162]: Dataset 1
+            - generic [ref=f1e164]: Dataset 2

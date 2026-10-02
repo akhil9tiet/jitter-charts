@@ -22,7 +22,6 @@ export const BarChart: React.FC = () => {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [stat1, setStat1] = useState<string>('0.00');
   const [stat2, setStat2] = useState<string>('0.00');
-  const [isExiting, setIsExiting] = useState<boolean>(false);
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -38,6 +37,8 @@ export const BarChart: React.FC = () => {
     const chartGroup = svg
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
+      .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+      .attr('preserveAspectRatio', 'xMidYMid meet')
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
@@ -132,54 +133,36 @@ export const BarChart: React.FC = () => {
     animateOdometer(1.91, setStat1);
     animateOdometer(1.85, setStat2);
 
-    // --- Exit Animation Sequence Trigger (Simulated Loop at 5 seconds) ---
-    const exitTimer = setTimeout(() => {
-      // Collapse bars downwards
-      chartGroup.selectAll('rect')
-        .transition()
-        .duration(400)
-        .ease(d3.easeCubicIn)
-        .attr('y', height)
-        .attr('height', 0);
-
-      // Trigger structural fade out on the card container
-      setTimeout(() => {
-        setIsExiting(true);
-      }, 250);
-    }, 5000);
-
-    return () => clearTimeout(exitTimer);
   }, []);
 
   return (
-    <div className={`chart-card ${isExiting ? 'exit' : ''}`}>
-      <div className="header">
-        <span className="title">Bar Chart</span>
-        <span className="subtitle">Last 7 days</span>
+    <div className="bar-chart">
+      <div className="bar-chart-header">
+        <span className="bar-chart-subtitle">Last 7 days</span>
       </div>
 
-      <div className="stats-grid">
-        <div className="stat-box">
-          <div className="stat-number">{stat1}</div>
-          <div className="stat-label">
-            <span className="dot primary"></span> Dataset 1, Daily avg.
+      <div className="bar-chart-stats">
+        <div className="bar-chart-stat">
+          <div className="bar-chart-stat-number">{stat1}</div>
+          <div className="bar-chart-stat-label">
+            <span className="bar-chart-dot primary"></span> Dataset 1, daily avg.
           </div>
         </div>
-        <div className="stat-box">
-          <div className="stat-number">{stat2}</div>
-          <div className="stat-label">
-            <span className="dot secondary"></span> Dataset 2, Daily avg.
+        <div className="bar-chart-stat">
+          <div className="bar-chart-stat-number">{stat2}</div>
+          <div className="bar-chart-stat-label">
+            <span className="bar-chart-dot secondary"></span> Dataset 2, daily avg.
           </div>
         </div>
       </div>
 
-      <div className="chart-container">
-        <svg ref={svgRef}></svg>
+      <div className="bar-chart-plot">
+        <svg ref={svgRef} />
       </div>
 
-      <div className="legend-footer">
-        <div className="legend-item"><span className="dot primary"></span> Dataset 1</div>
-        <div className="legend-item"><span className="dot secondary-bg"></span> Dataset 2</div>
+      <div className="bar-chart-legend">
+        <div className="bar-chart-legend-item"><span className="bar-chart-dot primary"></span> Dataset 1</div>
+        <div className="bar-chart-legend-item"><span className="bar-chart-dot secondary-bg"></span> Dataset 2</div>
       </div>
     </div>
   );

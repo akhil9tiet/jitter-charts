@@ -19,51 +19,30 @@ const chartData: DataPoint[] = [
 
 export const AnimatedChartAnnotated: React.FC = () => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const counterRef = useRef<HTMLDivElement>(null);
-
-  const [animationState, setAnimationState] = useState<
-    'idle' | 'entering' | 'exiting'
-  >('idle');
+  const [hasStarted, setHasStarted] = useState(false);
+  const [cycle, setCycle] = useState(0);
 
   useEffect(() => {
-    const runLifecycle = () => {
-      setAnimationState('entering');
-
-      const exitTimer = setTimeout(() => {
-        setAnimationState('exiting');
-      }, 4200);
-
-      const resetTimer = setTimeout(() => {
-        setAnimationState('idle');
-      }, 5200);
-
-      return () => {
-        clearTimeout(exitTimer);
-        clearTimeout(resetTimer);
-      };
-    };
-
-    if (animationState === 'idle') {
-      const initTimer = setTimeout(runLifecycle, 200);
-      return () => clearTimeout(initTimer);
-    }
-  }, [animationState]);
+    const timer = setTimeout(() => setHasStarted(true), 200);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
-    if (!svgRef.current) return;
+    if (!hasStarted) return;
 
-    if (animationState === 'exiting') {
-      d3.select(svgRef.current)
-        .selectAll('*')
-        .transition()
-        .duration(600)
-        .ease(d3.easeCubicInOut)
-        .style('opacity', 0);
-      return;
-    }
+    const cycleTimer = setInterval(() => {
+      setCycle((currentCycle) => currentCycle + 1);
+    }, 4000);
 
-    if (animationState !== 'entering') return;
+    return () => clearInterval(cycleTimer);
+  }, [hasStarted]);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+    const svgElement = svgRef.current;
+    const counterElement = counterRef.current;
+    if (!svgElement || !counterElement) return;
 
     const margin = { top: 40, right: 60, bottom: 50, left: 60 };
     const width = 500;
@@ -71,12 +50,15 @@ export const AnimatedChartAnnotated: React.FC = () => {
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
 
-    d3.select(svgRef.current).selectAll('*').remove();
+    d3.select(svgElement).selectAll('*').interrupt().remove();
+    counterElement.textContent = '0';
 
     const svg = d3
-      .select(svgRef.current)
+      .select(svgElement)
       .attr('width', width)
       .attr('height', height)
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .attr('preserveAspectRatio', 'xMidYMid meet')
       .style('opacity', 1);
 
     const g = svg
@@ -158,18 +140,16 @@ export const AnimatedChartAnnotated: React.FC = () => {
       .ease(d3.easeCubicOut)
       .attr('stroke-dashoffset', 0);
 
-    if (counterRef.current) {
-      d3.select(counterRef.current)
-        .transition()
-        .duration(animationDuration - 200)
-        .tween('text', function () {
-          const interpolator = d3.interpolateNumber(0, 36157);
-          return function (t) {
-            const currentVal = Math.floor(interpolator(t));
-            counterRef.current!.innerText = currentVal.toLocaleString();
-          };
-        });
-    }
+    d3.select(counterElement)
+      .transition()
+      .duration(animationDuration - 200)
+      .tween('text', function () {
+        const interpolator = d3.interpolateNumber(0, 36157);
+        return function (t) {
+          const currentVal = Math.floor(interpolator(t));
+          counterElement.innerText = currentVal.toLocaleString();
+        };
+      });
 
     const lastPoint = chartData[chartData.length - 1];
     const targetX = xScale(lastPoint.quarter) || 0;
@@ -235,39 +215,27 @@ export const AnimatedChartAnnotated: React.FC = () => {
       .delay(animationDuration - 100)
       .duration(400)
       .attr('r', 3);
-  }, [animationState]);
+
+    return () => {
+      d3.select(svgElement).selectAll('*').interrupt();
+      d3.select(counterElement).interrupt();
+    };
+  }, [cycle, hasStarted]);
 
   return (
-    <div className="wrapper">
-      <div
-        ref={containerRef}
-        className={`dashboard-card ${
-          animationState === 'entering'
-            ? 'state-enter'
-            : animationState === 'exiting'
-            ? 'state-exit'
-            : ''
-        }`}
-      >
-        {/* Adjusted Header Structure */}
-        <div className="card-header">
-          <div className="header-meta">
-            <span className="dataset-label">Q4 DATASET 1</span>
-            <h1 ref={counterRef} className="counter-value">
-              0
-            </h1>
-          </div>
-          <div className="trend-badge-wrapper">
-            <div className="trend-badge">
-              <span className="trend-icon">~</span>
-              <span>8%</span>
-            </div>
-          </div>
+    <div className="annotated-chart">
+      <div className="annotated-metric">
+        <div>
+          <span className="annotated-dataset">Q4 dataset</span>
+          <div ref={counterRef} className="annotated-counter">0</div>
         </div>
-
-        <div className="chart-wrapper">
-          <svg ref={svgRef}></svg>
+        <div className="annotated-trend">
+          <span aria-hidden="true">↗</span> 8%
+          <span className="annotated-trend-label">year over year</span>
         </div>
+      </div>
+      <div className="annotated-chart-plot">
+        <svg ref={svgRef} />
       </div>
     </div>
   );

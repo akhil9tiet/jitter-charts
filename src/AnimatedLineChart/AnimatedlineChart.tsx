@@ -70,32 +70,52 @@ const interstellar: StoryPoint[] = [
 ];
 
 const lines: LineData[] = [
-  { name: 'Interstellar', data: interstellar, color: '#2d3748' },
+  { name: 'Interstellar', data: interstellar, color: '#202528' },
   {
     name: 'Baseline',
     data: baseline,
-    color: '#a0aec0',
-    strokeDasharray: '5,5',
+    color: '#89978e',
+    strokeDasharray: '3,5',
   },
 ];
 
+const entryDuration = 1000;
+const holdDuration = 4000;
+const exitDuration = 900;
+const lineStartDelay = entryDuration * 0.9;
+const lineDuration = 1450;
+
 export const AnimatedLineChart: React.FC = () => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [animationStarted, setAnimationStarted] = useState(false);
+  const [phase, setPhase] = useState<'entering' | 'holding' | 'exiting'>(
+    'entering',
+  );
+  const [cycle, setCycle] = useState(0);
 
-  // -----------------------------
-  // ANIMATION TRIGGER
-  // -----------------------------
   useEffect(() => {
-    const timer = setTimeout(() => setAnimationStarted(true), 50);
+    const duration =
+      phase === 'entering'
+        ? entryDuration
+        : phase === 'holding'
+          ? holdDuration
+          : exitDuration;
+    const timer = setTimeout(() => {
+      if (phase === 'entering') {
+        setPhase('holding');
+      } else if (phase === 'holding') {
+        setPhase('exiting');
+      } else {
+        setCycle((currentCycle) => currentCycle + 1);
+        setPhase('entering');
+      }
+    }, duration);
+
     return () => clearTimeout(timer);
-  }, []);
+  }, [phase]);
 
-  // -----------------------------
-  // D3 RENDER
-  // -----------------------------
   useEffect(() => {
-    if (!svgRef.current || !animationStarted) return;
+    const svgElement = svgRef.current;
+    if (!svgElement) return;
 
     const margin = { top: 60, right: 40, bottom: 80, left: 50 };
     const width = 460;
@@ -103,12 +123,14 @@ export const AnimatedLineChart: React.FC = () => {
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
 
-    d3.select(svgRef.current).selectAll('*').remove();
+    d3.select(svgElement).selectAll('*').interrupt().remove();
 
     const svg = d3
-      .select(svgRef.current)
+      .select(svgElement)
       .attr('width', width)
-      .attr('height', height);
+      .attr('height', height)
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .attr('preserveAspectRatio', 'xMidYMid meet');
 
     const g = svg
       .append('g')
@@ -146,7 +168,7 @@ export const AnimatedLineChart: React.FC = () => {
       .attr('x2', chartWidth)
       .attr('y1', (d) => yScale(d))
       .attr('y2', (d) => yScale(d))
-      .attr('stroke', '#d6dcc0')
+      .attr('stroke', '#d2deca')
       .attr('stroke-width', 1);
 
     // -----------------------------
@@ -169,14 +191,9 @@ export const AnimatedLineChart: React.FC = () => {
         .attr('d', lineGenerator)
         .attr('fill', 'none')
         .attr('stroke', lineData.color)
-        .attr('stroke-width', 2.5);
-
-      // 🔥 THIS IS THE IMPORTANT PART
-      if (lineData.strokeDasharray) {
-        path.attr('stroke-dasharray', lineData.strokeDasharray);
-      } else {
-        path.attr('stroke-dasharray', 'none'); // ensure solid line stays solid
-      }
+        .attr('stroke-width', lineData.strokeDasharray ? 2 : 2.7)
+        .attr('stroke-linecap', 'round')
+        .style('opacity', 0);
 
       const totalLength = path.node()?.getTotalLength() || 0;
 
@@ -184,11 +201,12 @@ export const AnimatedLineChart: React.FC = () => {
         .attr('stroke-dasharray', `${totalLength} ${totalLength}`)
         .attr('stroke-dashoffset', totalLength)
         .transition()
-        .duration(1400)
+        .delay(lineStartDelay)
+        .duration(lineDuration)
         .ease(d3.easeCubicOut)
         .attr('stroke-dashoffset', 0)
+        .style('opacity', 1)
         .on('end', function () {
-          // restore final style
           if (lineData.strokeDasharray) {
             d3.select(this).attr('stroke-dasharray', lineData.strokeDasharray);
           } else {
@@ -196,48 +214,27 @@ export const AnimatedLineChart: React.FC = () => {
           }
         });
     });
-  }, [animationStarted]);
 
-  // -----------------------------
-  // JSX
-  // -----------------------------
+    return () => {
+      d3.select(svgElement).selectAll('*').interrupt();
+    };
+  }, [cycle]);
+
   return (
-    <div
-      className={`chart-container ${animationStarted ? 'animate' : ''}`}
-    >
-      <div className={`chart-canvas ${animationStarted ? 'animate' : ''}`}>
-        <h2 className={`chart-title ${animationStarted ? 'animate' : ''}`}>
-          Story Arc Chart
-        </h2>
-
-        <svg ref={svgRef}></svg>
-
-        <div className={`legend ${animationStarted ? 'animate' : ''}`}>
-          <div className="legend-item">
-            <svg width="30" height="2">
-              <line
-                x1="0"
-                y1="1"
-                x2="30"
-                y2="1"
-                stroke="#2d3748"
-                strokeWidth="2"
-              />
+    <div className={`story-chart story-chart-${phase}`}>
+      <div className="story-chart-content">
+        <h3 className="story-chart-title">Story Arc Chart</h3>
+        <svg className="story-chart-svg" ref={svgRef} />
+        <div className="story-chart-legend">
+          <div className="story-chart-legend-item">
+            <svg width="30" height="2" aria-hidden="true">
+              <line x1="0" y1="1" x2="30" y2="1" stroke="#202528" strokeWidth="2" />
             </svg>
             <span>Interstellar</span>
           </div>
-
-          <div className="legend-item">
-            <svg width="30" height="2">
-              <line
-                x1="0"
-                y1="1"
-                x2="30"
-                y2="1"
-                stroke="#a0aec0"
-                strokeWidth="2"
-                strokeDasharray="5,5"
-              />
+          <div className="story-chart-legend-item">
+            <svg width="30" height="2" aria-hidden="true">
+              <line x1="0" y1="1" x2="30" y2="1" stroke="#89978e" strokeWidth="2" strokeDasharray="3,5" />
             </svg>
             <span>Baseline</span>
           </div>

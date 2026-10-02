@@ -1,0 +1,114 @@
+- generic [ref=e3]:
+  - complementary "Chart selection" [ref=e4]:
+    - link "Jitter Charts home" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - generic [aria-hidden] [ref=e6]: J
+      - generic [ref=e7]: Jitter Charts
+    - paragraph [ref=e9]: Library
+    - group "Choose charts to display" [ref=e10]:
+      - generic [ref=e12] [cursor=pointer]:
+        - radio "00 All charts" [checked] [ref=e13]
+        - generic [ref=e14]: "00"
+        - generic [ref=e15]: All charts
+      - generic [ref=e17] [cursor=pointer]:
+        - radio "01 Story arc" [ref=e18]
+        - generic [ref=e19]: "01"
+        - generic [ref=e20]: Story arc
+      - generic [ref=e22] [cursor=pointer]:
+        - radio "02 Quarterly growth" [ref=e23]
+        - generic [ref=e24]: "02"
+        - generic [ref=e25]: Quarterly growth
+      - generic [ref=e27] [cursor=pointer]:
+        - radio "03 Weekly comparison" [ref=e28]
+        - generic [ref=e29]: "03"
+        - generic [ref=e30]: Weekly comparison
+    - generic [ref=e32]: 3 animated previews
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - paragraph [ref=e38]: Data in motion
+        - heading "Chart previews" [level=1] [ref=e39]
+        - paragraph [ref=e40]: Three animated studies, from story beats to weekly performance.
+      - generic [ref=e41]:
+        - generic [ref=e42]: "03"
+        - generic [ref=e43]: previews
+    - region "Chart previews" [ref=e44]:
+      - article [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]: "01"
+            - heading "Story arc" [level=2] [ref=e49]
+          - paragraph [ref=e50]: Emotional beats across a feature-length story.
+        - generic [ref=e53]:
+          - heading "Story Arc Chart" [level=3] [ref=e54]
+          - img [ref=e55]:
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - generic [ref=e58]: "2"
+                - generic [ref=e60]: "4"
+                - generic [ref=e62]: "6"
+                - generic [ref=e64]: "8"
+                - generic [ref=e66]: "10"
+                - generic [ref=e68]: "12"
+                - generic [ref=e70]: "14"
+                - generic [ref=e72]: "16"
+                - generic [ref=e74]: "18"
+                - generic [ref=e76]: "20"
+                - generic [ref=e78]: "22"
+                - generic [ref=e80]: "24"
+              - generic [ref=e82]:
+                - generic [ref=e83]: −10
+                - generic [ref=e85]: −8
+                - generic [ref=e87]: −6
+                - generic [ref=e89]: −4
+                - generic [ref=e91]: −2
+                - generic [ref=e93]: "0"
+                - generic [ref=e95]: "2"
+                - generic [ref=e97]: "4"
+                - generic [ref=e99]: "6"
+                - generic [ref=e101]: "8"
+                - generic [ref=e103]: "10"
+          - generic [ref=e108]:
+            - generic [ref=e109]: Interstellar
+            - generic [ref=e112]: Baseline
+      - article [ref=e115]:
+        - generic [ref=e116]:
+          - generic [ref=e117]:
+            - generic [ref=e118]: "02"
+            - heading "Quarterly growth" [level=2] [ref=e119]
+          - paragraph [ref=e120]: A year of revenue, with the final quarter in focus.
+        - generic [ref=e123]:
+          - generic [ref=e124]:
+            - text: Q4 dataset
+            - generic [ref=e125]: "0"
+          - generic [ref=e126]:
+            - generic [aria-hidden] [ref=e127]: ↗
+            - text: 8%
+            - generic [ref=e128]: year over year
+      - article [ref=e131]:
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]: "03"
+            - heading "Weekly comparison" [level=2] [ref=e135]
+          - paragraph [ref=e136]: Two daily series compared across the week.
+        - generic [ref=e138]:
+          - generic [ref=e139]: Last 7 days
+          - generic [ref=e140]:
+            - generic [ref=e141]:
+              - generic [ref=e142]: "0.00"
+              - generic [ref=e143]: Dataset 1, daily avg.
+            - generic [ref=e145]:
+              - generic [ref=e146]: "0.00"
+              - generic [ref=e147]: Dataset 2, daily avg.
+          - img [ref=e150]:
+            - generic [ref=e151]:
+              - generic [ref=e152]: Mon
+              - generic [ref=e154]: Tue
+              - generic [ref=e156]: Wed
+              - generic [ref=e158]: Thu
+              - generic [ref=e160]: Fri
+              - generic [ref=e162]: Sat
+              - generic [ref=e164]: Sun
+          - generic [ref=e166]:
+            - generic [ref=e167]: Dataset 1
+            - generic [ref=e169]: Dataset 2
