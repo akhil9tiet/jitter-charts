@@ -203,9 +203,9 @@ export const AnimatedLineChart: React.FC = () => {
   // -----------------------------
   return (
     <div
-      className={`chart-container ${animationStarted ? 'animate' : ''}`}
+      className={`story-arc-container ${animationStarted ? 'animate' : ''}`}
     >
-      <div className={`chart-canvas ${animationStarted ? 'animate' : ''}`}>
+      <div className={`story-arc-canvas ${animationStarted ? 'animate' : ''}`}>
         <h2 className={`chart-title ${animationStarted ? 'animate' : ''}`}>
           Story Arc Chart
         </h2>
