@@ -3,9 +3,19 @@ import * as d3 from 'd3';
 import './AnimatedChartAnnotated.css';
 
 interface DataPoint {
-  x: number; // Represents progression across timeline
+  quarter: string;
   value: number;
 }
+
+const chartData: DataPoint[] = [
+  { quarter: 'Q1', value: 24000 },
+  { quarter: 'Q1_mid', value: 22000 },
+  { quarter: 'Q2', value: 32000 },
+  { quarter: 'Q2_mid', value: 43000 },
+  { quarter: 'Q3', value: 48000 },
+  { quarter: 'Q3_mid', value: 34000 },
+  { quarter: 'Q4', value: 38000 },
+];
 
 export const AnimatedChartAnnotated: React.FC = () => {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -15,16 +25,6 @@ export const AnimatedChartAnnotated: React.FC = () => {
   const [animationState, setAnimationState] = useState<
     'idle' | 'entering' | 'exiting'
   >('idle');
-
-  const chartData: DataPoint[] = [
-    { quarter: 'Q1', value: 24000 },
-    { quarter: 'Q1_mid', value: 22000 },
-    { quarter: 'Q2', value: 32000 },
-    { quarter: 'Q2_mid', value: 43000 },
-    { quarter: 'Q3', value: 48000 },
-    { quarter: 'Q3_mid', value: 34000 },
-    { quarter: 'Q4', value: 38000 },
-  ];
 
   useEffect(() => {
     const runLifecycle = () => {

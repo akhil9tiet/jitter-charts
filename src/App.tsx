@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import './App.css';
 import { AnimatedLineChart } from './AnimatedLineChart/AnimatedlineChart';
 import { AnimatedChartAnnotated } from './AnimatedChartAnnotated/AnimatedChartAnnotated';

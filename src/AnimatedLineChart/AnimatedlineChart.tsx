@@ -15,15 +15,7 @@ interface LineData {
   strokeDasharray?: string;
 }
 
-export const AnimatedLineChart: React.FC = () => {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [animationStarted, setAnimationStarted] = useState(false);
-
-  // -----------------------------
-  // DATA
-  // -----------------------------
-  const baseline: StoryPoint[] = [
+const baseline: StoryPoint[] = [
     { x: 1, value: 1, label: 'Opening image' },
     { x: 2, value: 2, label: 'Setup' },
     { x: 3, value: 1, label: 'Theme stated' },
@@ -48,9 +40,9 @@ export const AnimatedLineChart: React.FC = () => {
     { x: 22, value: 6, label: 'Falling action' },
     { x: 23, value: 4, label: 'Denouement' },
     { x: 24, value: 7, label: 'Final image' },
-  ];
+];
 
-  const interstellar: StoryPoint[] = [
+const interstellar: StoryPoint[] = [
     { x: 1, value: -2, label: 'Earth dying / Dust storms' },
     { x: 2, value: -1, label: "Murph's ghost" },
     { x: 3, value: 2, label: 'Discovering NASA' },
@@ -75,17 +67,21 @@ export const AnimatedLineChart: React.FC = () => {
     { x: 22, value: 2, label: 'Bittersweet goodbye' },
     { x: 23, value: 6, label: 'Stealing the ship' },
     { x: 24, value: 7, label: 'Finding Brand' },
-  ];
+];
 
-  const lines: LineData[] = [
-    { name: 'Interstellar', data: interstellar, color: '#2d3748' },
-    {
-      name: 'Baseline',
-      data: baseline,
-      color: '#a0aec0',
-      strokeDasharray: '5,5',
-    },
-  ];
+const lines: LineData[] = [
+  { name: 'Interstellar', data: interstellar, color: '#2d3748' },
+  {
+    name: 'Baseline',
+    data: baseline,
+    color: '#a0aec0',
+    strokeDasharray: '5,5',
+  },
+];
+
+export const AnimatedLineChart: React.FC = () => {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [animationStarted, setAnimationStarted] = useState(false);
 
   // -----------------------------
   // ANIMATION TRIGGER
@@ -163,22 +159,6 @@ export const AnimatedLineChart: React.FC = () => {
       .curve(d3.curveCatmullRom.alpha(0.5));
 
     // -----------------------------
-    // TOOLTIP
-    // -----------------------------
-    const tooltip = d3
-      .select(containerRef.current)
-      .append('div')
-      .attr('class', 'tooltip')
-      .style('position', 'absolute')
-      .style('padding', '6px 10px')
-      .style('background', '#2d3748')
-      .style('color', 'white')
-      .style('border-radius', '6px')
-      .style('font-size', '12px')
-      .style('pointer-events', 'none')
-      .style('opacity', 0);
-
-    // -----------------------------
     // DRAW LINES (NO DOTS)
     // -----------------------------
     // DRAW LINES
@@ -223,7 +203,6 @@ export const AnimatedLineChart: React.FC = () => {
   // -----------------------------
   return (
     <div
-      ref={containerRef}
       className={`chart-container ${animationStarted ? 'animate' : ''}`}
     >
       <div className={`chart-canvas ${animationStarted ? 'animate' : ''}`}>
