@@ -1,0 +1,165 @@
+:root {
+  --bg-color: #f6f8ff;
+  --card-bg: #eceeff;
+  --text-main: #1d2130;
+  --text-muted: #9ba3cb;
+  --primary-bar: #4f46e5;
+  --secondary-bar: #c7d2fe;
+}
+
+/* Container Styles & Entry Trigger */
+.chart-card {
+  background-color: var(--card-bg);
+  border-radius: 24px;
+  padding: 32px;
+  width: 540px;
+  box-shadow: 0 20px 40px rgba(79, 70, 229, 0.05);
+  opacity: 0;
+  transform: scale(0.92) translateY(20px);
+  animation: cardEntry 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  box-sizing: border-box;
+}
+
+.chart-card.exit {
+  animation: cardExit 0.5s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
+}
+
+@keyframes cardEntry {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes cardExit {
+  to {
+    opacity: 0;
+    transform: scale(0.85) translateY(10px);
+  }
+}
+
+/* Header & Metadata */
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.title {
+  color: var(--text-main);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Stat Counters */
+.stats-grid {
+  display: flex;
+  gap: 60px;
+  margin-bottom: 32px;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.1;
+  height: 40px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.primary {
+  background-color: var(--primary-bar);
+}
+.dot.secondary {
+  background-color: var(--text-muted);
+}
+.dot.secondary-bg {
+  background-color: var(--secondary-bar);
+}
+
+/* SVG Area Structure */
+.chart-container {
+  position: relative;
+  height: 180px;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* D3 Elements Specific Styling */
+.y-grid-line {
+  stroke: rgba(155, 163, 203, 0.15);
+  stroke-dasharray: 4, 4;
+  stroke-width: 1px;
+}
+
+.axis-baseline {
+  stroke: rgba(155, 163, 203, 0.2);
+  stroke-width: 1px;
+}
+
+.d3-bar-secondary {
+  fill: var(--secondary-bar);
+}
+
+.d3-bar-primary {
+  fill: var(--primary-bar);
+}
+
+.d3-x-label {
+  fill: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: sans-serif;
+}
+
+/* Bottom Footer Legend */
+.legend-footer {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 32px;
+  opacity: 0;
+  animation: legendFadeIn 0.5s ease forwards 0.6s;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+@keyframes legendFadeIn {
+  to {
+    opacity: 1;
+  }
+}
