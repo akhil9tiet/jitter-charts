@@ -132,23 +132,24 @@ export const BarChart: React.FC = () => {
     animateOdometer(1.91, setStat1);
     animateOdometer(1.85, setStat2);
 
-    // --- Exit Animation Sequence Trigger (Simulated Loop at 5 seconds) ---
+    // Reverse the staggered bar entrance: the last bar exits first.
+    let exitCompletionTimer: ReturnType<typeof setTimeout> | undefined;
     const exitTimer = setTimeout(() => {
-      // Collapse bars downwards
-      chartGroup.selectAll('rect')
+      chartGroup.selectAll<SVGRectElement, DataPoint>('.d3-bar-secondary, .d3-bar-primary')
         .transition()
-        .duration(400)
+        .delay((_, i) => (chartData.length - 1 - Math.floor(i / 2)) * 80)
+        .duration(800)
         .ease(d3.easeCubicIn)
         .attr('y', height)
         .attr('height', 0);
 
-      // Trigger structural fade out on the card container
-      setTimeout(() => {
-        setIsExiting(true);
-      }, 250);
+      exitCompletionTimer = setTimeout(() => setIsExiting(true), 1280);
     }, 5000);
 
-    return () => clearTimeout(exitTimer);
+    return () => {
+      clearTimeout(exitTimer);
+      if (exitCompletionTimer) clearTimeout(exitCompletionTimer);
+    };
   }, []);
 
   return (

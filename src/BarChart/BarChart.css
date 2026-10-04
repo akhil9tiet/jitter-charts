@@ -21,7 +21,7 @@
 }
 
 .chart-card.exit {
-  animation: cardExit 0.5s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
+  animation: cardExit 0.8s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
 }
 
 @keyframes cardEntry {
@@ -34,7 +34,21 @@
 @keyframes cardExit {
   to {
     opacity: 0;
-    transform: scale(0.85) translateY(10px);
+    transform: scale(0.92) translateY(20px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-card.exit {
+    animation-duration: 250ms;
+    animation-timing-function: ease-out;
+  }
+
+  @keyframes cardExit {
+    to {
+      opacity: 0;
+      transform: translateY(0);
+    }
   }
 }
 
