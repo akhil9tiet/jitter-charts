@@ -1,69 +1,33 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { FC } from 'react';
 import * as d3 from 'd3';
-import './AnimatedChartAnnotated.css';
+import type { AnnotatedLinePoint } from '../types';
 
-interface DataPoint {
-  quarter: string;
-  value: number;
+export interface AnimatedChartAnnotatedProps {
+  data: AnnotatedLinePoint[];
 }
 
-const chartData: DataPoint[] = [
-  { quarter: 'Q1', value: 24000 },
-  { quarter: 'Q1_mid', value: 22000 },
-  { quarter: 'Q2', value: 32000 },
-  { quarter: 'Q2_mid', value: 43000 },
-  { quarter: 'Q3', value: 48000 },
-  { quarter: 'Q3_mid', value: 34000 },
-  { quarter: 'Q4', value: 38000 },
-];
-
-export const AnimatedChartAnnotated: React.FC = () => {
+export const AnimatedChartAnnotated: FC<AnimatedChartAnnotatedProps> = ({ data }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const counterRef = useRef<HTMLDivElement>(null);
+  const lastPoint = data[data.length - 1];
+  const previousPoint = data[data.length - 2];
+  const trend = lastPoint && previousPoint?.value
+    ? ((lastPoint.value - previousPoint.value) / previousPoint.value) * 100
+    : 0;
 
-  const [animationState, setAnimationState] = useState<
-    'idle' | 'entering' | 'exiting'
-  >('idle');
-
-  useEffect(() => {
-    const runLifecycle = () => {
-      setAnimationState('entering');
-
-      const exitTimer = setTimeout(() => {
-        setAnimationState('exiting');
-      }, 4200);
-
-      const resetTimer = setTimeout(() => {
-        setAnimationState('idle');
-      }, 5200);
-
-      return () => {
-        clearTimeout(exitTimer);
-        clearTimeout(resetTimer);
-      };
-    };
-
-    if (animationState === 'idle') {
-      const initTimer = setTimeout(runLifecycle, 200);
-      return () => clearTimeout(initTimer);
-    }
-  }, [animationState]);
+  const [animationStarted, setAnimationStarted] = useState(false);
 
   useEffect(() => {
-    if (!svgRef.current) return;
+    const timer = setTimeout(() => setAnimationStarted(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
 
-    if (animationState === 'exiting') {
-      d3.select(svgRef.current)
-        .selectAll('*')
-        .transition()
-        .duration(600)
-        .ease(d3.easeCubicInOut)
-        .style('opacity', 0);
-      return;
-    }
-
-    if (animationState !== 'entering') return;
+  useEffect(() => {
+    const svgElement = svgRef.current;
+    if (!svgElement || !animationStarted || data.length === 0) return;
+    if (!lastPoint) return;
 
     const margin = { top: 40, right: 60, bottom: 50, left: 60 };
     const width = 500;
@@ -71,10 +35,10 @@ export const AnimatedChartAnnotated: React.FC = () => {
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
 
-    d3.select(svgRef.current).selectAll('*').remove();
+    d3.select(svgElement).selectAll('*').remove();
 
     const svg = d3
-      .select(svgRef.current)
+      .select(svgElement)
       .attr('width', width)
       .attr('height', height)
       .style('opacity', 1);
@@ -85,12 +49,13 @@ export const AnimatedChartAnnotated: React.FC = () => {
 
     const xScale = d3
       .scalePoint()
-      .domain(chartData.map((d) => d.quarter))
+      .domain(data.map((d) => d.quarter))
       .range([0, chartWidth]);
 
-    const yScale = d3.scaleLinear().domain([0, 60000]).range([chartHeight, 0]);
+    const maxValue = Math.max(1, d3.max(data, (d) => d.value) ?? 1);
+    const yScale = d3.scaleLinear().domain([0, maxValue * 1.25]).range([chartHeight, 0]);
 
-    const yTicks = [0, 20000, 40000, 60000];
+    const yTicks = yScale.ticks(4);
     g.append('g')
       .attr('class', 'grid')
       .selectAll('line')
@@ -116,9 +81,9 @@ export const AnimatedChartAnnotated: React.FC = () => {
       .attr('fill', '#718e9c')
       .style('font-size', '11px')
       .style('font-weight', '500')
-      .text((d) => (d === 0 ? '0' : `${d / 1000}K`));
+      .text((d) => (d >= 1000 ? `${d / 1000}K` : `${d}`));
 
-    const mainQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+    const mainQuarters = data.map((d) => d.quarter).filter((quarter) => !quarter.endsWith('_mid'));
     g.append('g')
       .selectAll('text')
       .data(mainQuarters)
@@ -127,20 +92,20 @@ export const AnimatedChartAnnotated: React.FC = () => {
       .attr('x', (d) => xScale(d) || 0)
       .attr('y', chartHeight + 30)
       .attr('text-anchor', 'middle')
-      .attr('fill', (d) => (d === 'Q4' ? '#111827' : '#718e9c'))
+      .attr('fill', (d) => (d === lastPoint.quarter ? '#111827' : '#718e9c'))
       .style('font-size', '12px')
-      .style('font-weight', (d) => (d === 'Q4' ? '700' : '500'))
+      .style('font-weight', (d) => (d === lastPoint.quarter ? '700' : '500'))
       .text((d) => d);
 
     const lineGenerator = d3
-      .line<DataPoint>()
+      .line<AnnotatedLinePoint>()
       .x((d) => xScale(d.quarter) || 0)
       .y((d) => yScale(d.value))
       .curve(d3.curveCatmullRom.alpha(0.5));
 
     const path = g
       .append('path')
-      .datum(chartData)
+      .datum(data)
       .attr('fill', 'none')
       .attr('stroke', '#16222f')
       .attr('stroke-width', 2.5)
@@ -163,7 +128,7 @@ export const AnimatedChartAnnotated: React.FC = () => {
         .transition()
         .duration(animationDuration - 200)
         .tween('text', function () {
-          const interpolator = d3.interpolateNumber(0, 36157);
+          const interpolator = d3.interpolateNumber(0, lastPoint.value);
           return function (t) {
             const currentVal = Math.floor(interpolator(t));
             counterRef.current!.innerText = currentVal.toLocaleString();
@@ -171,7 +136,6 @@ export const AnimatedChartAnnotated: React.FC = () => {
         });
     }
 
-    const lastPoint = chartData[chartData.length - 1];
     const targetX = xScale(lastPoint.quarter) || 0;
     const targetY = yScale(lastPoint.value);
 
@@ -235,24 +199,18 @@ export const AnimatedChartAnnotated: React.FC = () => {
       .delay(animationDuration - 100)
       .duration(400)
       .attr('r', 3);
-  }, [animationState]);
+    return () => {
+      d3.select(svgElement).selectAll('*').interrupt();
+    };
+  }, [animationStarted, data, lastPoint]);
 
   return (
-    <div className="wrapper">
-      <div
-        ref={containerRef}
-        className={`dashboard-card ${
-          animationState === 'entering'
-            ? 'state-enter'
-            : animationState === 'exiting'
-            ? 'state-exit'
-            : ''
-        }`}
-      >
+    <div className="jc-annotated-wrapper">
+      <div ref={containerRef} className={`dashboard-card ${animationStarted ? 'state-enter' : ''}`}>
         {/* Adjusted Header Structure */}
         <div className="card-header">
           <div className="header-meta">
-            <span className="dataset-label">Q4 DATASET 1</span>
+            <span className="dataset-label">{data[data.length - 1]?.quarter ?? 'LATEST'} DATASET</span>
             <h1 ref={counterRef} className="counter-value">
               0
             </h1>
@@ -260,7 +218,7 @@ export const AnimatedChartAnnotated: React.FC = () => {
           <div className="trend-badge-wrapper">
             <div className="trend-badge">
               <span className="trend-icon">~</span>
-              <span>8%</span>
+              <span>{`${trend > 0 ? '+' : ''}${trend.toFixed(0)}%`}</span>
             </div>
           </div>
         </div>

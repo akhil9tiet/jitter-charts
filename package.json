@@ -1,18 +1,38 @@
 {
-  "name": "jitter-charts",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@akhil9tiet/jitter-charts",
+  "private": false,
+  "version": "0.1.0",
   "type": "module",
+  "description": "Animated React charts with fixed styles and built-in motion.",
+  "files": ["dist-package"],
+  "main": "./dist-package/index.cjs",
+  "module": "./dist-package/index.js",
+  "types": "./dist-package/types/index.d.ts",
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": {
+      "types": "./dist-package/types/index.d.ts",
+      "import": "./dist-package/index.js",
+      "require": "./dist-package/index.cjs"
+    },
+    "./style.css": "./dist-package/style.css"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "vite --configLoader runner",
+    "build": "tsc -b && vite build --configLoader runner",
+    "build:package": "vite build --config vite.lib.config.ts --configLoader runner && tsc -p tsconfig.lib.json",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview --configLoader runner"
   },
   "dependencies": {
-    "d3": "^7.9.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "d3": "^7.9.0"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

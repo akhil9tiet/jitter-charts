@@ -27,10 +27,10 @@
 }
 
 .chart-canvas.animate {
-  animation: canvasWipe 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: jitterStoryCanvasWipe 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-@keyframes canvasWipe {
+@keyframes jitterStoryCanvasWipe {
   from {
     clip-path: inset(0 0 0 100%);
   }
@@ -48,6 +48,7 @@
   box-sizing: border-box;
   overflow: hidden;
   width: 500px;
+  max-width: 100%;
   height: 380px;
 
   /* Initial state */
@@ -56,16 +57,16 @@
   clip-path: inset(0 0 0 100%); /* fully clipped on the right */
 
   /* Unified entrance animation */
-  animation: containerWipe 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
-    containerScale 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    containerFade 0.6s ease-out forwards;
+  animation: jitterStoryContainerWipe 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+    jitterStoryContainerScale 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    jitterStoryContainerFade 0.6s ease-out forwards;
 }
 
 .story-arc-container.animate {
   /* No final-state CSS needed — animations handle it */
 }
 
-@keyframes containerWipe {
+@keyframes jitterStoryContainerWipe {
   from {
     clip-path: inset(0 0 0 100%);
   }
@@ -74,7 +75,7 @@
   }
 }
 
-@keyframes containerScale {
+@keyframes jitterStoryContainerScale {
   from {
     transform: scale(1.5);
   }
@@ -83,7 +84,7 @@
   }
 }
 
-@keyframes containerFade {
+@keyframes jitterStoryContainerFade {
   from {
     opacity: 0.5;
   }
@@ -108,11 +109,11 @@
 }
 
 .story-arc-container .chart-title.animate {
-  animation: titleSlide 0.85s ease-out 0.2s forwards,
-    titleFade 0.4s ease-out 0.32s forwards;
+  animation: jitterStoryTitleSlide 0.85s ease-out 0.2s forwards,
+    jitterStoryTitleFade 0.4s ease-out 0.32s forwards;
 }
 
-@keyframes titleSlide {
+@keyframes jitterStoryTitleSlide {
   from {
     transform: translateX(150px);
   }
@@ -121,7 +122,7 @@
   }
 }
 
-@keyframes titleFade {
+@keyframes jitterStoryTitleFade {
   from {
     opacity: 0;
   }
@@ -146,10 +147,10 @@
 }
 
 .story-arc-container .legend.animate {
-  animation: legendSlideUp 0.5s ease-out 0.32s forwards;
+  animation: jitterStoryLegendSlideUp 0.5s ease-out 0.32s forwards;
 }
 
-@keyframes legendSlideUp {
+@keyframes jitterStoryLegendSlideUp {
   from {
     transform: translateX(-50%) translateY(30px);
     opacity: 0;
@@ -167,9 +168,20 @@
   gap: 8px;
 }
 
-.legend-line {
+.story-arc-container .legend-line {
   width: 24px;
   height: 4px;
   border-radius: 2px;
   flex-shrink: 0;
+}
+
+.story-arc-container svg { max-width: 100%; height: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .story-arc-container,
+  .story-arc-container .chart-title,
+  .story-arc-container .legend {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
 }

@@ -1,4 +1,4 @@
-:root {
+.jitter-bar-card {
   --bg-color: #f6f8ff;
   --card-bg: #eceeff;
   --text-main: #1d2130;
@@ -8,83 +8,59 @@
 }
 
 /* Container Styles & Entry Trigger */
-.chart-card {
+.jitter-bar-card {
   background-color: var(--card-bg);
   border-radius: 24px;
   padding: 32px;
   width: 540px;
+  max-width: 100%;
   box-shadow: 0 20px 40px rgba(79, 70, 229, 0.05);
   opacity: 0;
   transform: scale(0.92) translateY(20px);
-  animation: cardEntry 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: jitterBarCardEntry 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   box-sizing: border-box;
 }
 
-.chart-card.exit {
-  animation: cardExit 0.8s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
-}
-
-@keyframes cardEntry {
+@keyframes jitterBarCardEntry {
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
 }
 
-@keyframes cardExit {
-  to {
-    opacity: 0;
-    transform: scale(0.92) translateY(20px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .chart-card.exit {
-    animation-duration: 250ms;
-    animation-timing-function: ease-out;
-  }
-
-  @keyframes cardExit {
-    to {
-      opacity: 0;
-      transform: translateY(0);
-    }
-  }
-}
-
 /* Header & Metadata */
-.header {
+.jitter-bar-card .header {
   display: flex;
   align-items: baseline;
   gap: 12px;
   margin-bottom: 24px;
 }
 
-.title {
+.jitter-bar-card .title {
   color: var(--text-main);
   font-size: 20px;
   font-weight: 700;
 }
 
-.subtitle {
+.jitter-bar-card .subtitle {
   color: var(--text-muted);
   font-size: 16px;
   font-weight: 500;
 }
 
 /* Stat Counters */
-.stats-grid {
+.jitter-bar-card .stats-grid {
   display: flex;
   gap: 60px;
   margin-bottom: 32px;
 }
 
-.stat-box {
+.jitter-bar-card .stat-box {
   display: flex;
   flex-direction: column;
 }
 
-.stat-number {
+.jitter-bar-card .stat-number {
   font-size: 36px;
   font-weight: 700;
   color: var(--text-main);
@@ -92,7 +68,7 @@
   height: 40px;
 }
 
-.stat-label {
+.jitter-bar-card .stat-label {
   font-size: 12px;
   color: var(--text-muted);
   margin-top: 6px;
@@ -101,52 +77,59 @@
   gap: 6px;
 }
 
-.dot {
+.jitter-bar-card .dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   display: inline-block;
 }
 
-.dot.primary {
+.jitter-bar-card .dot.primary {
   background-color: var(--primary-bar);
 }
-.dot.secondary {
+.jitter-bar-card .dot.secondary {
   background-color: var(--text-muted);
 }
-.dot.secondary-bg {
+.jitter-bar-card .dot.secondary-bg {
   background-color: var(--secondary-bar);
 }
 
 /* SVG Area Structure */
-.chart-container {
+.jitter-bar-card .chart-container {
   position: relative;
   height: 180px;
   display: flex;
   align-items: flex-end;
 }
 
+.jitter-bar-card svg { max-width: 100%; height: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .jitter-bar-card { animation-duration: 0.01ms; }
+  .jitter-bar-card .legend-footer { animation-duration: 0.01ms; animation-delay: 0ms; }
+}
+
 /* D3 Elements Specific Styling */
-.y-grid-line {
+.jitter-bar-card .y-grid-line {
   stroke: rgba(155, 163, 203, 0.15);
   stroke-dasharray: 4, 4;
   stroke-width: 1px;
 }
 
-.axis-baseline {
+.jitter-bar-card .axis-baseline {
   stroke: rgba(155, 163, 203, 0.2);
   stroke-width: 1px;
 }
 
-.d3-bar-secondary {
+.jitter-bar-card .d3-bar-secondary {
   fill: var(--secondary-bar);
 }
 
-.d3-bar-primary {
+.jitter-bar-card .d3-bar-primary {
   fill: var(--primary-bar);
 }
 
-.d3-x-label {
+.jitter-bar-card .d3-x-label {
   fill: var(--text-muted);
   font-size: 11px;
   font-weight: 600;
@@ -154,16 +137,16 @@
 }
 
 /* Bottom Footer Legend */
-.legend-footer {
+.jitter-bar-card .legend-footer {
   display: flex;
   justify-content: center;
   gap: 24px;
   margin-top: 32px;
   opacity: 0;
-  animation: legendFadeIn 0.5s ease forwards 0.6s;
+  animation: jitterBarLegendFadeIn 0.5s ease forwards 0.6s;
 }
 
-.legend-item {
+.jitter-bar-card .legend-item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -172,7 +155,7 @@
   color: var(--text-main);
 }
 
-@keyframes legendFadeIn {
+@keyframes jitterBarLegendFadeIn {
   to {
     opacity: 1;
   }
