@@ -1,28 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import type { FC } from 'react';
 import * as d3 from 'd3';
-import './BarChart.css';
+import type { BarChartPoint } from '../types';
 
-interface DataPoint {
-  day: string;
-  dataset1: number;
-  dataset2: number;
+export interface BarChartProps {
+  data: BarChartPoint[];
 }
 
-const chartData: DataPoint[] = [
-  { day: 'Mon', dataset1: 25, dataset2: 50 },
-  { day: 'Tue', dataset1: 15, dataset2: 60 },
-  { day: 'Wed', dataset1: 45, dataset2: 85 },
-  { day: 'Thu', dataset1: 20, dataset2: 55 },
-  { day: 'Fri', dataset1: 22, dataset2: 58 },
-  { day: 'Sat', dataset1: 10, dataset2: 65 },
-  { day: 'Sun', dataset1: 5,  dataset2: 30 },
-];
+const barEntryDelay = 150;
+const barStagger = 80;
+const barDuration = 800;
 
-export const BarChart: React.FC = () => {
+export const BarChart: FC<BarChartProps> = ({ data }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [stat1, setStat1] = useState<string>('0.00');
-  const [stat2, setStat2] = useState<string>('0.00');
-  const [isExiting, setIsExiting] = useState<boolean>(false);
+  const stat1Ref = useRef<HTMLDivElement | null>(null);
+  const stat2Ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -43,16 +35,17 @@ export const BarChart: React.FC = () => {
 
     // Scales
     const xScale = d3.scaleBand()
-      .domain(chartData.map(d => d.day))
+      .domain(data.map(d => d.day))
       .range([0, width])
       .padding(0.45);
 
+    const maxValue = Math.max(1, d3.max(data, (point) => Math.max(point.dataset1, point.dataset2)) ?? 1);
     const yScale = d3.scaleLinear()
-      .domain([0, 100])
+      .domain([0, maxValue * 1.15])
       .range([height, 0]);
 
     // Dashed Grid Lines
-    const gridTicks = [25, 50, 75, 100];
+    const gridTicks = yScale.ticks(4);
     chartGroup.selectAll('.y-grid-line')
       .data(gridTicks)
       .enter()
@@ -73,7 +66,7 @@ export const BarChart: React.FC = () => {
 
     // Render Data Columns
     const barGroups = chartGroup.selectAll('.bar-group')
-      .data(chartData)
+      .data(data)
       .enter()
       .append('g')
       .attr('transform', d => `translate(${xScale(d.day)}, 0)`);
@@ -89,8 +82,8 @@ export const BarChart: React.FC = () => {
       .attr('height', 0)
       .attr('rx', 8)
       .transition()
-      .delay((_, i) => 150 + i * 80)
-      .duration(800)
+      .delay((_, i) => barEntryDelay + i * barStagger)
+      .duration(barDuration)
       .ease(d3.easeCubicOut)
       .attr('y', d => yScale(d.dataset2))
       .attr('height', d => height - yScale(d.dataset2));
@@ -104,8 +97,8 @@ export const BarChart: React.FC = () => {
       .attr('height', 0)
       .attr('rx', 8)
       .transition()
-      .delay((_, i) => 150 + i * 80)
-      .duration(800)
+      .delay((_, i) => barEntryDelay + i * barStagger)
+      .duration(barDuration)
       .ease(d3.easeCubicOut)
       .attr('y', d => yScale(d.dataset1))
       .attr('height', d => height - yScale(d.dataset1));
@@ -119,55 +112,46 @@ export const BarChart: React.FC = () => {
       .text(d => d.day);
 
     // Odometer Counter Effect
-    const animateOdometer = (target: number, setter: React.Dispatch<React.SetStateAction<string>>) => {
+    const animateOdometer = (element: HTMLDivElement | null, target: number) => {
+      if (!element) return;
       d3.transition()
         .duration(1000)
         .ease(d3.easeQuadOut)
         .tween('text', () => {
           const interpolator = d3.interpolateNumber(0, target);
-          return (t) => setter(interpolator(t).toFixed(2));
+          return (t) => {
+            element.textContent = interpolator(t).toFixed(2);
+          };
         });
     };
 
-    animateOdometer(1.91, setStat1);
-    animateOdometer(1.85, setStat2);
-
-    // Reverse the staggered bar entrance: the last bar exits first.
-    let exitCompletionTimer: ReturnType<typeof setTimeout> | undefined;
-    const exitTimer = setTimeout(() => {
-      chartGroup.selectAll<SVGRectElement, DataPoint>('.d3-bar-secondary, .d3-bar-primary')
-        .transition()
-        .delay((_, i) => (chartData.length - 1 - Math.floor(i / 2)) * 80)
-        .duration(800)
-        .ease(d3.easeCubicIn)
-        .attr('y', height)
-        .attr('height', 0);
-
-      exitCompletionTimer = setTimeout(() => setIsExiting(true), 1280);
-    }, 5000);
+    const mean1 = data.length ? d3.mean(data, (point) => point.dataset1) ?? 0 : 0;
+    const mean2 = data.length ? d3.mean(data, (point) => point.dataset2) ?? 0 : 0;
+    animateOdometer(stat1Ref.current, mean1);
+    animateOdometer(stat2Ref.current, mean2);
 
     return () => {
-      clearTimeout(exitTimer);
-      if (exitCompletionTimer) clearTimeout(exitCompletionTimer);
+      svg.interrupt();
+      svg.selectAll('*').interrupt();
     };
-  }, []);
+  }, [data]);
 
   return (
-    <div className={`chart-card ${isExiting ? 'exit' : ''}`}>
+    <div className="jitter-bar-card">
       <div className="header">
         <span className="title">Bar Chart</span>
-        <span className="subtitle">Last 7 days</span>
+        <span className="subtitle">{data.length ? `Last ${data.length} days` : 'No data'}</span>
       </div>
 
       <div className="stats-grid">
         <div className="stat-box">
-          <div className="stat-number">{stat1}</div>
+          <div className="stat-number" ref={stat1Ref}>0.00</div>
           <div className="stat-label">
             <span className="dot primary"></span> Dataset 1, Daily avg.
           </div>
         </div>
         <div className="stat-box">
-          <div className="stat-number">{stat2}</div>
+          <div className="stat-number" ref={stat2Ref}>0.00</div>
           <div className="stat-label">
             <span className="dot secondary"></span> Dataset 2, Daily avg.
           </div>

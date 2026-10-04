@@ -1,85 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { FC } from 'react';
 import * as d3 from 'd3';
-import './AnimatedLineChart.css';
+import type { StoryArcPoint, StoryArcSeries } from '../types';
 
-interface StoryPoint {
-  x: number;
-  value: number;
-  label: string;
+export interface AnimatedLineChartProps {
+  data: StoryArcSeries[];
 }
 
-interface LineData {
-  name: string;
-  data: StoryPoint[];
-  color: string;
-  strokeDasharray?: string;
-}
-
-const baseline: StoryPoint[] = [
-    { x: 1, value: 1, label: 'Opening image' },
-    { x: 2, value: 2, label: 'Setup' },
-    { x: 3, value: 1, label: 'Theme stated' },
-    { x: 4, value: -3, label: 'Inciting incident' },
-    { x: 5, value: -5, label: 'Debate' },
-    { x: 6, value: 0, label: 'Break into Act II' },
-    { x: 7, value: 2, label: 'B story' },
-    { x: 8, value: -2, label: 'Fun and games begins' },
-    { x: 9, value: -4, label: 'Rising complications' },
-    { x: 10, value: -6, label: 'Mid-crisis setup' },
-    { x: 11, value: -3, label: 'Hope spot' },
-    { x: 12, value: 0, label: 'Midpoint (reversal)' },
-    { x: 13, value: 1, label: 'Escalation' },
-    { x: 14, value: -1, label: 'Tension mounts' },
-    { x: 15, value: -3, label: 'Bad guys close in' },
-    { x: 16, value: -8, label: 'All is lost' },
-    { x: 17, value: -6, label: 'Dark night of the soul' },
-    { x: 18, value: -2, label: 'Break into Act III' },
-    { x: 19, value: 3, label: 'Final approach' },
-    { x: 20, value: 6, label: 'Climax' },
-    { x: 21, value: 8, label: 'Payoff' },
-    { x: 22, value: 6, label: 'Falling action' },
-    { x: 23, value: 4, label: 'Denouement' },
-    { x: 24, value: 7, label: 'Final image' },
-];
-
-const interstellar: StoryPoint[] = [
-    { x: 1, value: -2, label: 'Earth dying / Dust storms' },
-    { x: 2, value: -1, label: "Murph's ghost" },
-    { x: 3, value: 2, label: 'Discovering NASA' },
-    { x: 4, value: 0, label: 'The mission choice' },
-    { x: 5, value: -5, label: 'Leaving Murph behind' },
-    { x: 6, value: 4, label: 'Launch' },
-    { x: 7, value: 3, label: 'Wormhole travel' },
-    { x: 8, value: 0, label: "Miller's Planet" },
-    { x: 9, value: -6, label: '23 years lost' },
-    { x: 10, value: -4, label: 'Messages from home' },
-    { x: 11, value: -1, label: "Mann's Planet debate" },
-    { x: 12, value: -7, label: "Dr. Mann's betrayal" },
-    { x: 13, value: -5, label: 'Docking sequence' },
-    { x: 14, value: -3, label: 'Slingshot maneuver' },
-    { x: 15, value: -8, label: 'Cooper detaches' },
-    { x: 16, value: 5, label: 'Inside the Tesseract' },
-    { x: 17, value: 7, label: 'Communicating with Murph' },
-    { x: 18, value: 6, label: 'Murph solves gravity' },
-    { x: 19, value: 3, label: 'Tesseract closes' },
-    { x: 20, value: 4, label: 'Cooper Station rescue' },
-    { x: 21, value: 5, label: 'Reuniting with Murph' },
-    { x: 22, value: 2, label: 'Bittersweet goodbye' },
-    { x: 23, value: 6, label: 'Stealing the ship' },
-    { x: 24, value: 7, label: 'Finding Brand' },
-];
-
-const lines: LineData[] = [
-  { name: 'Interstellar', data: interstellar, color: '#2d3748' },
-  {
-    name: 'Baseline',
-    data: baseline,
-    color: '#a0aec0',
-    strokeDasharray: '5,5',
-  },
-];
-
-export const AnimatedLineChart: React.FC = () => {
+export const AnimatedLineChart: FC<AnimatedLineChartProps> = ({ data }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [animationStarted, setAnimationStarted] = useState(false);
 
@@ -95,7 +23,8 @@ export const AnimatedLineChart: React.FC = () => {
   // D3 RENDER
   // -----------------------------
   useEffect(() => {
-    if (!svgRef.current || !animationStarted) return;
+    const svgElement = svgRef.current;
+    if (!svgElement || !animationStarted || data.length === 0) return;
 
     const margin = { top: 60, right: 40, bottom: 80, left: 50 };
     const width = 460;
@@ -103,10 +32,10 @@ export const AnimatedLineChart: React.FC = () => {
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
 
-    d3.select(svgRef.current).selectAll('*').remove();
+    d3.select(svgElement).selectAll('*').remove();
 
     const svg = d3
-      .select(svgRef.current)
+      .select(svgElement)
       .attr('width', width)
       .attr('height', height);
 
@@ -117,8 +46,14 @@ export const AnimatedLineChart: React.FC = () => {
     // -----------------------------
     // AXES
     // -----------------------------
-    const xScale = d3.scaleLinear().domain([1, 24]).range([0, chartWidth]);
-    const yScale = d3.scaleLinear().domain([-10, 10]).range([chartHeight, 0]);
+    const points = data.flatMap((series) => series.data);
+    if (points.length === 0) return;
+    const xExtent = d3.extent(points, (point) => point.x);
+    const yExtent = d3.extent(points, (point) => point.value);
+    const xScale = d3.scaleLinear().domain(xExtent as [number, number]).range([0, chartWidth]);
+    const yScale = d3.scaleLinear()
+      .domain([Math.min(0, (yExtent[0] ?? -1) - 2), Math.max(0, (yExtent[1] ?? 1) + 2)])
+      .range([chartHeight, 0]);
 
     const xAxis = d3.axisBottom(xScale).ticks(12).tickFormat(d3.format('d'));
     const yAxis = d3.axisLeft(yScale).ticks(10);
@@ -153,7 +88,7 @@ export const AnimatedLineChart: React.FC = () => {
     // LINE GENERATOR
     // -----------------------------
     const lineGenerator = d3
-      .line<StoryPoint>()
+      .line<StoryArcPoint>()
       .x((d) => xScale(d.x))
       .y((d) => yScale(d.value))
       .curve(d3.curveCatmullRom.alpha(0.5));
@@ -162,7 +97,7 @@ export const AnimatedLineChart: React.FC = () => {
     // DRAW LINES (NO DOTS)
     // -----------------------------
     // DRAW LINES
-    lines.forEach((lineData) => {
+    data.forEach((lineData) => {
       const path = g
         .append('path')
         .datum(lineData.data)
@@ -171,7 +106,7 @@ export const AnimatedLineChart: React.FC = () => {
         .attr('stroke', lineData.color)
         .attr('stroke-width', 2.5);
 
-      // 🔥 THIS IS THE IMPORTANT PART
+      // ðŸ”¥ THIS IS THE IMPORTANT PART
       if (lineData.strokeDasharray) {
         path.attr('stroke-dasharray', lineData.strokeDasharray);
       } else {
@@ -196,7 +131,10 @@ export const AnimatedLineChart: React.FC = () => {
           }
         });
     });
-  }, [animationStarted]);
+    return () => {
+      d3.select(svgElement).selectAll('*').interrupt();
+    };
+  }, [animationStarted, data]);
 
   // -----------------------------
   // JSX
@@ -213,34 +151,22 @@ export const AnimatedLineChart: React.FC = () => {
         <svg ref={svgRef}></svg>
 
         <div className={`legend ${animationStarted ? 'animate' : ''}`}>
-          <div className="legend-item">
-            <svg width="30" height="2">
-              <line
-                x1="0"
-                y1="1"
-                x2="30"
-                y2="1"
-                stroke="#2d3748"
-                strokeWidth="2"
-              />
-            </svg>
-            <span>Interstellar</span>
-          </div>
-
-          <div className="legend-item">
-            <svg width="30" height="2">
-              <line
-                x1="0"
-                y1="1"
-                x2="30"
-                y2="1"
-                stroke="#a0aec0"
-                strokeWidth="2"
-                strokeDasharray="5,5"
-              />
-            </svg>
-            <span>Baseline</span>
-          </div>
+          {data.map((series) => (
+            <div className="legend-item" key={series.name}>
+              <svg width="30" height="2" aria-hidden="true">
+                <line
+                  x1="0"
+                  y1="1"
+                  x2="30"
+                  y2="1"
+                  stroke={series.color}
+                  strokeWidth="2"
+                  strokeDasharray={series.strokeDasharray}
+                />
+              </svg>
+              <span>{series.name}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

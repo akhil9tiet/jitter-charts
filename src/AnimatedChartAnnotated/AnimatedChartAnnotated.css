@@ -1,4 +1,4 @@
-.wrapper {
+.jc-annotated-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,8 +11,9 @@
 /* -------------------------------------------------------------
  * DASHBOARD CARD CONTAINER
  * ------------------------------------------------------------- */
-.dashboard-card {
+.jc-annotated-wrapper .dashboard-card {
   width: 500px;
+  max-width: 100%;
   background-color: #e2f1f7;
   border-radius: 28px;
   padding: 30px 10px 15px 10px;
@@ -24,7 +25,7 @@
   pointer-events: none;
 }
 
-.dashboard-card.state-enter {
+.jc-annotated-wrapper .dashboard-card.state-enter {
   opacity: 1;
   transform: translateX(0) scale(1);
   pointer-events: auto;
@@ -32,17 +33,10 @@
     opacity 0.6s ease-out;
 }
 
-.dashboard-card.state-exit {
-  opacity: 0;
-  transform: translateY(15px) scale(0.98);
-  transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1),
-    opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
 /* -------------------------------------------------------------
  * ALIGNED HEADER ELEMENTS
  * ------------------------------------------------------------- */
-.card-header {
+.jc-annotated-wrapper .card-header {
   padding: 0 60px; /* Aligned margins exactly with the inner SVG container */
   margin-bottom: 5px;
   display: flex;
@@ -50,12 +44,12 @@
 }
 
 /* Vertical Stack layout */
-.header-meta {
+.jc-annotated-wrapper .header-meta {
   display: flex;
   flex-direction: column;
 }
 
-.dataset-label {
+.jc-annotated-wrapper .dataset-label {
   font-size: 11px;
   font-weight: 700;
   color: #5c7987;
@@ -63,7 +57,7 @@
   margin-bottom: 2px;
 }
 
-.counter-value {
+.jc-annotated-wrapper .counter-value {
   font-size: 38px;
   font-weight: 700;
   color: #16222f;
@@ -73,12 +67,12 @@
 }
 
 /* Right alignment wrapper block */
-.trend-badge-wrapper {
+.jc-annotated-wrapper .trend-badge-wrapper {
   margin-left: auto;
   padding-bottom: 2px; /* Slight optical adjustment offset */
 }
 
-.trend-badge {
+.jc-annotated-wrapper .trend-badge {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -91,13 +85,21 @@
   border: 1px solid rgba(22, 34, 47, 0.08);
 }
 
-.trend-icon {
+.jc-annotated-wrapper .trend-icon {
   font-weight: bold;
   transform: translateY(-1px);
 }
 
-.chart-wrapper {
+.jc-annotated-wrapper .chart-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+.jc-annotated-wrapper svg { max-width: 100%; height: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .jc-annotated-wrapper .dashboard-card.state-enter {
+    transition-duration: 0.01ms;
+  }
 }
