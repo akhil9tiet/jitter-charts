@@ -5,6 +5,15 @@
   "license": "MIT",
   "type": "module",
   "description": "Animated React charts with fixed styles and built-in motion.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akhil9tiet/jitter-charts.git"
+  },
+  "homepage": "https://github.com/akhil9tiet/jitter-charts#readme",
+  "bugs": {
+    "url": "https://github.com/akhil9tiet/jitter-charts/issues"
+  },
+  "keywords": ["react", "charts", "d3", "animation", "visualization"],
   "files": ["dist-package", "LICENSE", "README.md"],
   "main": "./dist-package/index.cjs",
   "module": "./dist-package/index.js",
