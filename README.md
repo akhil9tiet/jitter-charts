@@ -2,11 +2,17 @@
 
 Animated React chart components with fixed visual styles and built-in motion.
 
+## Live docs
+
+[Open the Jitter Charts docs site](https://akhil9tiet.github.io/jitter-charts/)
+
+<iframe src="https://akhil9tiet.github.io/jitter-charts/" title="Jitter Charts documentation" width="100%" height="720" loading="lazy"></iframe>
+
 ## Purpose and third-party rights
 
-This project explores how to use chart designs inspired by Jitter templates with real data, and how to build polished React charts with D3. It is an independent project and is not affiliated with or endorsed by Jitter.
+This codebase aims to make it easier to use Jitter templates with real data and to build beautiful React charts with D3. It is an independent project and is not affiliated with or endorsed by Jitter.
 
-I do not claim ownership of Jitter, its name, or its templates. Those rights belong to their respective owners. I do not intend to infringe copyright. Users are responsible for checking that they have permission to use any third-party material they add to their projects. This notice does not remove legal obligations or determine liability.
+I do not claim any rights over Jitter charts, templates, or the Jitter name. Those rights belong to their respective owners. I do not intend to infringe copyright, and I do not accept liability for third-party material that users add or use with this codebase. Users are responsible for checking permissions for that material. This notice does not override applicable law or determine legal liability.
 
 ## Chart previews
 
