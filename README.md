@@ -2,11 +2,9 @@
 
 Animated React chart components with fixed visual styles and built-in motion.
 
-## Live docs
+## Live demo
 
-[Open the Jitter Charts docs site](https://akhil9tiet.github.io/jitter-charts/)
-
-<iframe src="https://akhil9tiet.github.io/jitter-charts/" title="Jitter Charts documentation" width="100%" height="720" loading="lazy"></iframe>
+[![Demo](https://raw.githubusercontent.com/akhil9tiet/jitter-charts/main/src/assets/linechart00.gif)](https://akhil9tiet.github.io/jitter-charts/)
 
 ## Purpose and third-party rights
 
