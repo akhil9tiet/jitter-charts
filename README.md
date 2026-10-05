@@ -2,6 +2,12 @@
 
 Animated React chart components with fixed visual styles and built-in motion.
 
+## Purpose and third-party rights
+
+This project explores how to use chart designs inspired by Jitter templates with real data, and how to build polished React charts with D3. It is an independent project and is not affiliated with or endorsed by Jitter.
+
+I do not claim ownership of Jitter, its name, or its templates. Those rights belong to their respective owners. I do not intend to infringe copyright. Users are responsible for checking that they have permission to use any third-party material they add to their projects. This notice does not remove legal obligations or determine liability.
+
 ## Chart previews
 
 These previews show the three animated charts included in the package. Each chart animates when it renders in a React app.
