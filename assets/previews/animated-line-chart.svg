@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">Animated line chart preview</title>
+  <desc id="desc">Two colored data lines rise across a light chart grid.</desc>
+  <rect width="720" height="360" rx="22" fill="#f8f7fb"/>
+  <text x="48" y="55" fill="#272433" font-family="Arial, sans-serif" font-size="19" font-weight="700">Story arc</text>
+  <text x="48" y="79" fill="#8b8795" font-family="Arial, sans-serif" font-size="12">ANIMATED LINE CHART</text>
+  <g stroke="#e7e4ed" stroke-width="1">
+    <path d="M80 115H670M80 165H670M80 215H670M80 265H670M80 315H670"/>
+  </g>
+  <g fill="#9994a4" font-family="Arial, sans-serif" font-size="11">
+    <text x="48" y="119">100</text><text x="55" y="169">75</text><text x="55" y="219">50</text><text x="55" y="269">25</text><text x="60" y="319">0</text>
+    <text x="82" y="340">1</text><text x="195" y="340">2</text><text x="308" y="340">3</text><text x="421" y="340">4</text><text x="534" y="340">5</text><text x="647" y="340">6</text>
+  </g>
+  <path d="M82 276 C125 267 150 247 194 250 S264 222 307 229 S380 169 421 184 S493 151 534 163 S608 111 668 126" fill="none" stroke="#7652e8" stroke-width="5" stroke-linecap="round"/>
+  <path d="M82 291 C126 286 151 269 194 276 S264 253 307 258 S380 218 421 225 S493 198 534 209 S608 177 668 185" fill="none" stroke="#36b8a1" stroke-width="3" stroke-linecap="round" stroke-dasharray="7 8"/>
+  <g fill="#7652e8" stroke="#fff" stroke-width="3"><circle cx="82" cy="276" r="6"/><circle cx="194" cy="250" r="6"/><circle cx="307" cy="229" r="6"/><circle cx="421" cy="184" r="6"/><circle cx="534" cy="163" r="6"/><circle cx="668" cy="126" r="6"/></g>
+</svg>

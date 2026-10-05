@@ -2,6 +2,28 @@
 
 Animated React chart components with fixed visual styles and built-in motion.
 
+## Chart previews
+
+These previews show the three animated charts included in the package. Each chart animates when it renders in a React app.
+
+### Animated line chart
+
+![Animated line chart preview](https://raw.githubusercontent.com/akhil9tiet/jitter-charts/main/src/assets/linechart00.gif)
+
+[Related Jitter template: Multiple Line Chart Green](https://jitter.video/template/multiple-line-chart-green/)
+
+### Annotated line chart
+
+![Annotated line chart preview](https://raw.githubusercontent.com/akhil9tiet/jitter-charts/main/src/assets/linechart01.gif)
+
+[Related Jitter template: Animated Line Chart Blue](https://jitter.video/template/animated-line-chart-blue/)
+
+### Bar chart
+
+![Bar chart preview](https://raw.githubusercontent.com/akhil9tiet/jitter-charts/main/src/assets/barchart.gif)
+
+[Related Jitter template: Stacked Bar Chart](https://jitter.video/template/stacked-bar-chart/)
+
 ## Install
 
 ```sh

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">Annotated line chart preview</title>
+  <desc id="desc">A blue line with circular data points and a highlighted annotation.</desc>
+  <rect width="720" height="360" rx="22" fill="#f8f7fb"/>
+  <text x="48" y="55" fill="#272433" font-family="Arial, sans-serif" font-size="19" font-weight="700">Quarterly growth</text>
+  <text x="48" y="79" fill="#8b8795" font-family="Arial, sans-serif" font-size="12">ANNOTATED LINE CHART</text>
+  <g stroke="#e7e4ed" stroke-width="1"><path d="M80 125H670M80 175H670M80 225H670M80 275H670"/></g>
+  <g fill="#9994a4" font-family="Arial, sans-serif" font-size="11"><text x="81" y="319">Q1</text><text x="228" y="319">Q2</text><text x="374" y="319">Q3</text><text x="520" y="319">Q4</text></g>
+  <path d="M85 276 C135 263 178 257 231 232 S321 209 378 173 S466 138 525 152 S612 119 665 103" fill="none" stroke="#4285f4" stroke-width="5" stroke-linecap="round"/>
+  <g fill="#fff" stroke="#4285f4" stroke-width="4"><circle cx="85" cy="276" r="7"/><circle cx="231" cy="232" r="7"/><circle cx="378" cy="173" r="7"/><circle cx="525" cy="152" r="7"/><circle cx="665" cy="103" r="7"/></g>
+  <path d="M525 142V111" stroke="#8d79df" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <rect x="474" y="91" width="102" height="36" rx="8" fill="#7652e8"/>
+  <text x="487" y="114" fill="#fff" font-family="Arial, sans-serif" font-size="12" font-weight="700">+18% growth</text>
+</svg>
