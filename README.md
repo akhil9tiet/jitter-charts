@@ -81,3 +81,7 @@ npm run build:package
 ```
 
 `npm run build:package` writes the publishable ESM, CommonJS, stylesheet, and declaration files to `dist-package/`.
+
+## License
+
+MIT. You can use, modify, and distribute this package for commercial or non-commercial purposes. Keep the copyright and license notice with copies. See [LICENSE](./LICENSE).

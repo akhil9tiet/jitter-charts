@@ -1,10 +1,11 @@
 {
   "name": "@akhil9tiet/jitter-charts",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "license": "MIT",
   "type": "module",
   "description": "Animated React charts with fixed styles and built-in motion.",
-  "files": ["dist-package"],
+  "files": ["dist-package", "LICENSE", "README.md"],
   "main": "./dist-package/index.cjs",
   "module": "./dist-package/index.js",
   "types": "./dist-package/types/index.d.ts",
