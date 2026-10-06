@@ -4,7 +4,9 @@ Animated React chart components with fixed visual styles and built-in motion.
 
 ## Live demo
 
-[![Demo](https://raw.githubusercontent.com/akhil9tiet/jitter-charts/main/src/assets/linechart00.gif)](https://akhil9tiet.github.io/jitter-charts/)
+[![Open the Jitter Charts live demo](https://raw.githubusercontent.com/akhil9tiet/jitter-charts/main/src/assets/linechart00.gif)](https://akhil9tiet.github.io/jitter-charts/)
+
+[Open Jitter Charts](https://akhil9tiet.github.io/jitter-charts/) · [View the source on GitHub](https://github.com/akhil9tiet/jitter-charts)
 
 ## Purpose and third-party rights
 
@@ -20,17 +22,23 @@ These previews show the three animated charts included in the package. Each char
 
 ![Animated line chart preview](https://raw.githubusercontent.com/akhil9tiet/jitter-charts/main/src/assets/linechart00.gif)
 
+[View all charts in the live demo](https://akhil9tiet.github.io/jitter-charts/)
+
 [Related Jitter template: Multiple Line Chart Green](https://jitter.video/template/multiple-line-chart-green/)
 
 ### Annotated line chart
 
 ![Annotated line chart preview](https://raw.githubusercontent.com/akhil9tiet/jitter-charts/main/src/assets/linechart01.gif)
 
+[View all charts in the live demo](https://akhil9tiet.github.io/jitter-charts/)
+
 [Related Jitter template: Animated Line Chart Blue](https://jitter.video/template/animated-line-chart-blue/)
 
 ### Bar chart
 
 ![Bar chart preview](https://raw.githubusercontent.com/akhil9tiet/jitter-charts/main/src/assets/barchart.gif)
+
+[View all charts in the live demo](https://akhil9tiet.github.io/jitter-charts/)
 
 [Related Jitter template: Stacked Bar Chart](https://jitter.video/template/stacked-bar-chart/)
 
